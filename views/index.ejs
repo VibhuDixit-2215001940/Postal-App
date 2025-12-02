@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Postal Lookup | Government Style</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- Top Gov Header -->
+<header class="gov-header">
+    <div class="gov-header-left">
+        <div class="emblem-circle">₹</div>
+        <div class="gov-text">
+            <div class="gov-top">भारत सरकार</div>
+            <div class="gov-bottom">Government of India</div>
+        </div>
+    </div>
+    <div class="gov-header-right">
+        <span>Department of Posts</span><br>
+        <span>Postal PIN Code Information Service</span>
+    </div>
+</header>
+
+<!-- Tricolor strip -->
+<div class="flag-strip">
+    <div class="flag-saffron"></div>
+    <div class="flag-white"></div>
+    <div class="flag-green"></div>
+</div>
+
+<div class="page-wrapper">
+    <div class="card">
+        <h2>Postal PIN Code / Post Office Search</h2>
+        <p class="subtitle">
+            Search Post Office details by <strong>PIN Code</strong> or <strong>Post Office Branch Name</strong>.
+        </p>
+
+        <form action="/search" method="POST" class="search-form">
+            <label for="searchType">Select Search Type <span class="req">*</span></label>
+            <select name="searchType" id="searchType" required>
+                <option value="pincode">Search by PIN Code</option>
+                <option value="postoffice">Search by Post Office Name</option>
+            </select>
+
+            <label for="queryValue">Enter Value <span class="req">*</span></label>
+            <input type="text" id="queryValue" name="queryValue" placeholder="e.g. 110001 or New Delhi" required>
+
+            <button type="submit" class="btn-primary">Search</button>
+        </form>
+
+        <% if (error) { %>
+            <div class="alert alert-error">
+                <strong>Note:</strong> <%= error %>
+            </div>
+        <% } %>
+
+        <% if (result) { %>
+            <div class="result-section">
+                <div class="result-header">
+                    <h3>Search Result</h3>
+                    <p><strong>Status:</strong> <%= result.Status %> | <strong>Message:</strong> <%= result.Message %></p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="gov-table">
+                        <thead>
+                            <tr>
+                                <th>Post Office Name</th>
+                                <th>Branch Type</th>
+                                <th>District</th>
+                                <th>State</th>
+                                <th>PIN Code</th>
+                                <th>Region</th>
+                                <th>Delivery Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% result.PostOffice.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.Name %></td>
+                                    <td><%= item.BranchType %></td>
+                                    <td><%= item.District %></td>
+                                    <td><%= item.State %></td>
+                                    <td><%= item.PINCode || "—" %></td>
+                                    <td><%= item.Region %></td>
+                                    <td><%= item.DeliveryStatus %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <footer class="footer">
+        © <%= new Date().getFullYear() %> Department of Posts, Government of India | For demonstration purpose only
+    </footer>
+</div>
+
+</body>
+</html>
